@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+    <defs>
+        <style>
+            .fv-text {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 700;
+                font-size: 45px; /* Slightly smaller to make space */
+                fill: #00f0ff; /* Primary color */
+            }
+            .web-text {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 700;
+                font-size: 28px; /* Smaller size */
+                fill: #ff00f0; /* Fuchsia/Lilac color */
+            }
+        </style>
+    </defs>
+    <rect width="100" height="100" fill="#0a0a0a"/>
+    <text x="50%" y="40%" dominant-baseline="middle" text-anchor="middle" class="fv-text">FV</text>
+    <text x="50%" y="75%" dominant-baseline="middle" text-anchor="middle" class="web-text">WEB</text>
+</svg>
