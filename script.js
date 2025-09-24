@@ -2,16 +2,48 @@ document.addEventListener('DOMContentLoaded', function() {
     // Preloader logic
     const preloader = document.querySelector('.preloader');
     if (preloader) {
+        const preloaderText = preloader.querySelector('.preloader-text');
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&@$*<>";
+        let interval = null;
+
+        if (preloaderText) {
+            const originalText = preloaderText.dataset.text;
+
+            const startPreloaderAnimation = () => {
+                let iteration = 0;
+                clearInterval(interval);
+
+                interval = setInterval(() => {
+                    preloaderText.innerText = originalText.split("")
+                        .map((letter, index) => {
+                            if(index < iteration) {
+                                return originalText[index];
+                            }
+                            return letters[Math.floor(Math.random() * letters.length)];
+                        })
+                        .join("");
+                    
+                    if(iteration >= originalText.length){ 
+                        clearInterval(interval);
+                    }
+                    
+                    iteration += 1 / 3;
+                }, 40);
+            };
+            
+            startPreloaderAnimation();
+        }
+
         window.addEventListener('load', () => {
-            // Wait for a minimum of 1 second before starting the fade-out
+            // Ensure the animation has time to be appreciated
             setTimeout(() => {
                 preloader.classList.add('loaded');
-            }, 1000); // 1000ms = 1 second minimum duration
-
-            // Set display:none after the minimum duration AND the fade-out animation
-            setTimeout(() => {
-                preloader.style.display = 'none';
-            }, 1900); // 1000ms (min duration) + 900ms (fade-out)
+                setTimeout(() => {
+                    if (preloader) {
+                        preloader.style.display = 'none';
+                    }
+                }, 900); // Match fade-out animation
+            }, 2500); // Minimum total preloader time
         });
     }
 
@@ -244,6 +276,35 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             }
+        });
+    }
+
+    // --- Cookie Consent Logic ---
+    const cookieBanner = document.getElementById('cookie-banner');
+    const acceptBtn = document.getElementById('cookie-accept-btn');
+
+    if (cookieBanner && acceptBtn) { // Make sure elements exist
+        // Check if user has already accepted cookies
+        if (!localStorage.getItem('cookies_accepted')) {
+            // If not, show the banner after a short delay
+            setTimeout(() => {
+                cookieBanner.classList.add('show');
+            }, 2000); // Wait 2 seconds before showing
+        }
+
+        acceptBtn.addEventListener('click', function() {
+            // Hide the banner
+            cookieBanner.classList.remove('show');
+            
+            // Set a value in localStorage to remember the choice
+            localStorage.setItem('cookies_accepted', 'true');
+
+            // Optional: Add a transitionend listener to set display:none after animation
+            cookieBanner.addEventListener('transitionend', () => {
+                if (!cookieBanner.classList.contains('show')) {
+                    cookieBanner.style.display = 'none';
+                }
+            }, { once: true });
         });
     }
 });
